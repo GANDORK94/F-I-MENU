@@ -1,4 +1,3 @@
-cat > index.html <<'HTML'
 <!doctype html>
 <html lang="en">
 <head>
@@ -9,127 +8,156 @@ cat > index.html <<'HTML'
   <meta name="theme-color" content="#0b1220" />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
-  <title>Westcoast Auto F&I Menu</title>
+  <title>F&I Menu</title>
 
   <style>
     :root { --bg:#0b1220; --card:#121b2e; --muted:#9fb0d0; --text:#e8f0ff; --accent:#4da3ff; }
     * { box-sizing: border-box; }
-    body{
-      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       background: radial-gradient(1000px 700px at 20% 0%, #17264a 0%, var(--bg) 60%);
-      color:var(--text); padding:18px;
+      color: var(--text); padding: 18px;
     }
-    .grid{ display:grid; grid-template-columns:1.05fr .95fr; gap:14px; max-width:1100px; margin:0 auto; }
-    @media (max-width:920px){ .grid{ grid-template-columns:1fr; } }
-    .card{
+    h1 { font-size: 20px; margin: 0 0 10px; }
+    .grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 14px; max-width: 1100px; margin: 0 auto; }
+    @media (max-width: 920px){ .grid { grid-template-columns: 1fr; } }
+
+    .card {
       background: rgba(18,27,46,.92);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:14px;
-      padding:14px;
-      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
     }
-    .brandBar{ display:flex; align-items:center; gap:12px; margin-bottom:10px; }
-    .brandBar img{
-      height:44px; width:auto; border-radius:10px;
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10);
-      padding:6px;
+    .sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
+    label { display: block; font-size: 12px; color: var(--muted); margin: 10px 0 6px; }
+    input[type="number"] {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.25);
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
     }
-    .title{ font-size:20px; font-weight:900; margin:0; }
-    .sub{ color:var(--muted); font-size:13px; margin-top:4px; }
+    input[type="number"]:focus { border-color: rgba(77,163,255,.6); box-shadow: 0 0 0 3px rgba(77,163,255,.15); }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-    label{ display:block; font-size:12px; color:var(--muted); margin:10px 0 6px; }
-    input[type="number"]{
-      width:100%; padding:11px 12px; border-radius:10px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(0,0,0,.25); color:var(--text);
-      font-size:15px; outline:none;
+    .toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 12px; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+      margin-top: 10px;
     }
-    .row{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .toggle{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:10px 12px; border-radius:12px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(0,0,0,.22); margin-top:10px;
+    .toggle strong { font-size: 14px; }
+    .toggle small { display:block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+    .switch { position: relative; width: 52px; height: 30px; }
+    .switch input { display:none; }
+    .slider {
+      position:absolute; inset:0; background: rgba(255,255,255,.12);
+      border-radius: 999px; transition: .2s;
+      border: 1px solid rgba(255,255,255,.10);
     }
-    .toggle strong{ font-size:14px; }
-    .toggle small{ display:block; color:var(--muted); font-size:12px; margin-top:2px; }
-    .switch{ position:relative; width:52px; height:30px; }
-    .switch input{ display:none; }
-    .slider{
-      position:absolute; inset:0; background:rgba(255,255,255,.12);
-      border-radius:999px; transition:.2s; border:1px solid rgba(255,255,255,.10);
+    .slider:before {
+      content:""; position:absolute; height: 24px; width: 24px; left: 3px; top: 2px;
+      background: rgba(255,255,255,.9); border-radius: 50%; transition: .2s;
     }
-    .slider:before{
-      content:""; position:absolute; height:24px; width:24px; left:3px; top:2px;
-      background:rgba(255,255,255,.9); border-radius:50%; transition:.2s;
-    }
-    .switch input:checked + .slider{ background:rgba(77,163,255,.35); border-color:rgba(77,163,255,.5); }
-    .switch input:checked + .slider:before{ transform:translateX(22px); }
+    .switch input:checked + .slider { background: rgba(77,163,255,.35); border-color: rgba(77,163,255,.5); }
+    .switch input:checked + .slider:before { transform: translateX(22px); background: #eaf4ff; }
 
-    .btnRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
-    button{
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(77,163,255,.18);
-      color:var(--text);
-      border-radius:12px;
-      padding:10px 12px;
-      font-weight:900;
-      cursor:pointer;
-    }
-    button.secondary{ background:rgba(255,255,255,.06); }
-    button:hover{ background:rgba(77,163,255,.26); }
+    .menuGrid { display:grid; grid-template-columns: 1fr; gap: 10px; }
 
-    .menuGrid{ display:grid; grid-template-columns:1fr; gap:10px; }
-    .plan{
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(0,0,0,.22);
-      border-radius:14px; padding:12px; cursor:pointer;
+    .plan {
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+      border-radius: 14px;
+      padding: 12px;
+      cursor: pointer;
     }
-    .planHeader{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
-    .planTitle{ font-weight:900; font-size:14px; }
-    .pill{ font-size:11px; padding:4px 8px; border-radius:999px; border:1px solid rgba(255,255,255,.12); color:var(--muted); }
-    .payment{ font-size:28px; font-weight:1000; margin-top:6px; }
-    .meta{ display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; color:var(--muted); font-size:12px; }
-    .meta span{ padding:4px 8px; border:1px dashed rgba(255,255,255,.14); border-radius:999px; }
-    .items{ margin-top:10px; border-top:1px solid rgba(255,255,255,.08); padding-top:10px; display:grid; gap:6px; }
-    .line{ display:flex; justify-content:space-between; color:var(--muted); font-size:13px; }
-    .line b{ color:var(--text); font-weight:900; }
+    .plan[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+    .planHeader { display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+    .planTitle { font-weight: 800; font-size: 14px; letter-spacing: .2px; }
+    .pill { font-size: 11px; padding: 4px 8px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); color: var(--muted); }
+    .payment { font-size: 28px; font-weight: 900; margin-top: 6px; }
+    .meta { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; color: var(--muted); font-size: 12px; }
+    .meta span { padding: 4px 8px; border: 1px dashed rgba(255,255,255,.14); border-radius: 999px; }
+    .items { margin-top: 10px; border-top: 1px solid rgba(255,255,255,.08); padding-top: 10px; display:grid; gap: 6px; }
+    .line { display:flex; justify-content:space-between; color: var(--muted); font-size: 13px; }
+    .line b { color: var(--text); font-weight: 700; }
+    .btnRow { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+    button {
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(77,163,255,.18);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    button:hover { background: rgba(77,163,255,.26); }
+    .secondary { background: rgba(255,255,255,.06); }
+    .secondary:hover { background: rgba(255,255,255,.10); }
+    .hint { margin-top: 10px; font-size: 12px; color: var(--muted); }
   </style>
 </head>
+
 <body>
   <div class="grid">
     <div class="card">
-      <div class="brandBar">
-        <img src="assets/dealership-logo.jpg" alt="Westcoast Auto Logo" />
+      <h1>F&amp;I Menu (PWA)</h1>
+      <div class="sub">Good/Better/Best warranty (Bronze/Gold/Platinum) + optional GAP — quotes payment by APR + term.</div>
+
+      <div class="row">
         <div>
-          <div class="title">Westcoast Auto F&amp;I Menu</div>
-          <div class="sub">Bronze / Gold / Platinum + optional GAP — quotes payment by APR + term.</div>
+          <label>Vehicle Selling Price ($)</label>
+          <input id="price" type="number" step="0.01" value="30000" />
+        </div>
+        <div>
+          <label>Sales Tax Rate (%)</label>
+          <input id="taxRate" type="number" step="0.01" value="9.50" />
         </div>
       </div>
 
       <div class="row">
-        <div><label>Selling Price ($)</label><input id="price" type="number" step="0.01" value="30000" /></div>
-        <div><label>Sales Tax Rate (%)</label><input id="taxRate" type="number" step="0.01" value="9.50" /></div>
+        <div>
+          <label>Doc/DMV/Other Fees ($)</label>
+          <input id="fees" type="number" step="0.01" value="899" />
+        </div>
+        <div>
+          <label>Trade Allowance ($)</label>
+          <input id="trade" type="number" step="0.01" value="0" />
+        </div>
       </div>
 
       <div class="row">
-        <div><label>Fees ($)</label><input id="fees" type="number" step="0.01" value="899" /></div>
-        <div><label>Trade Allowance ($)</label><input id="trade" type="number" step="0.01" value="0" /></div>
+        <div>
+          <label>Payoff (if any) ($)</label>
+          <input id="payoff" type="number" step="0.01" value="0" />
+        </div>
+        <div>
+          <label>Down Payment ($)</label>
+          <input id="down" type="number" step="0.01" value="3000" />
+        </div>
       </div>
 
       <div class="row">
-        <div><label>Payoff ($)</label><input id="payoff" type="number" step="0.01" value="0" /></div>
-        <div><label>Down Payment ($)</label><input id="down" type="number" step="0.01" value="3000" /></div>
-      </div>
-
-      <div class="row">
-        <div><label>APR (%)</label><input id="apr" type="number" step="0.01" value="8.99" /></div>
-        <div><label>Term (months)</label><input id="term" type="number" step="1" value="72" /></div>
+        <div>
+          <label>APR (%)</label>
+          <input id="apr" type="number" step="0.01" value="8.99" />
+        </div>
+        <div>
+          <label>Term (months)</label>
+          <input id="term" type="number" step="1" value="72" />
+        </div>
       </div>
 
       <div class="toggle">
-        <div><strong>Warranty Tier</strong><small>Tap a tier button (prices editable below)</small></div>
+        <div>
+          <strong>Warranty Coverage Level</strong>
+          <small>Select which coverage level to include in the quote</small>
+        </div>
         <div style="display:flex; gap:8px;">
           <button class="secondary" id="bronzeBtn" type="button">Bronze</button>
           <button class="secondary" id="goldBtn" type="button">Gold</button>
@@ -138,17 +166,32 @@ cat > index.html <<'HTML'
       </div>
 
       <div class="row">
-        <div><label>Bronze Price ($)</label><input id="bronzePrice" type="number" step="0.01" value="1495" /></div>
-        <div><label>Gold Price ($)</label><input id="goldPrice" type="number" step="0.01" value="2495" /></div>
+        <div>
+          <label>Bronze Price ($)</label>
+          <input id="bronzePrice" type="number" step="0.01" value="1495" />
+        </div>
+        <div>
+          <label>Gold Price ($)</label>
+          <input id="goldPrice" type="number" step="0.01" value="2495" />
+        </div>
       </div>
 
       <div class="row">
-        <div><label>Platinum Price ($)</label><input id="platinumPrice" type="number" step="0.01" value="3495" /></div>
-        <div><label>GAP Price ($)</label><input id="gapPrice" type="number" step="0.01" value="995" /></div>
+        <div>
+          <label>Platinum Price ($)</label>
+          <input id="platinumPrice" type="number" step="0.01" value="3495" />
+        </div>
+        <div>
+          <label>GAP Price ($)</label>
+          <input id="gapPrice" type="number" step="0.01" value="995" />
+        </div>
       </div>
 
       <div class="toggle">
-        <div><strong>Include GAP</strong><small>Add GAP to the selected tier</small></div>
+        <div>
+          <strong>Include GAP</strong>
+          <small>Add GAP to the selected plan</small>
+        </div>
         <label class="switch">
           <input id="gapOn" type="checkbox" checked />
           <span class="slider"></span>
@@ -157,24 +200,24 @@ cat > index.html <<'HTML'
 
       <div class="btnRow">
         <button id="copy">Copy selected plan</button>
-        <button class="secondary" id="reset">Reset</button>
+        <button class="secondary" id="reset">Reset example numbers</button>
       </div>
 
-      <div class="sub" style="margin-top:10px;">
-        Install on iPad: open site in Safari → Share → <b>Add to Home Screen</b>.
+      <div class="hint">
+        Install: open in Safari → Share → <b>Add to Home Screen</b>. (Works best when served over HTTPS.)
       </div>
     </div>
 
     <div class="card">
-      <div class="title" style="font-size:20px;">Good / Better / Best</div>
+      <h1>Good / Better / Best</h1>
       <div class="sub">Tap a plan to select it.</div>
       <div class="menuGrid" id="menu"></div>
-      <div class="sub" id="summaryHint" style="margin-top:10px;"></div>
+      <div class="hint" id="summaryHint"></div>
     </div>
   </div>
 
 <script>
-  // Service worker
+  // PWA: register service worker
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js"));
   }
@@ -201,13 +244,15 @@ cat > index.html <<'HTML'
     const down = Number($("down").value) || 0;
 
     const tax = Math.max(0, price * taxRate);
-    const netTrade = trade - payoff; // negative => negative equity increases amount financed
+    const netTrade = trade - payoff; // negative => negative equity added to amount financed
     const amountFinanced = Math.max(0, price + tax + fees - down - netTrade);
-    return { price, tax, fees, down, netTrade, amountFinanced };
+
+    return { price, taxRate, tax, fees, trade, payoff, down, netTrade, amountFinanced };
   }
 
-  let selectedWarranty = "platinum";
-  let selectedKey = "platinum_gap";
+  // Warranty selection state
+  let selectedWarranty = "platinum"; // bronze|gold|platinum
+  let selectedKey = "platinum_gap";  // computed selection
 
   function warrantyPriceFor(level) {
     if (level === "bronze") return Number($("bronzePrice").value) || 0;
@@ -222,24 +267,37 @@ cat > index.html <<'HTML'
     const gapOn = $("gapOn").checked;
     const gapPrice = Number($("gapPrice").value) || 0;
 
+    const bronze = warrantyPriceFor("bronze");
+    const gold = warrantyPriceFor("gold");
+    const platinum = warrantyPriceFor("platinum");
+
     const plans = [
-      { key: "base", title: "Base (No Products)", badge: "Lowest payment", w: 0, g: 0, tier: "Base" },
-      { key: "bronze", title: "Bronze (Good)", badge: "Essential coverage", w: warrantyPriceFor("bronze"), g: 0, tier: "Good" },
-      { key: "gold", title: "Gold (Better)", badge: "More coverage + value", w: warrantyPriceFor("gold"), g: 0, tier: "Better" },
-      { key: "platinum", title: "Platinum (Best)", badge: "Maximum coverage", w: warrantyPriceFor("platinum"), g: 0, tier: "Best" },
-      { key: "bronze_gap", title: "Bronze + GAP", badge: "Good + GAP protection", w: warrantyPriceFor("bronze"), g: gapOn ? gapPrice : 0, tier: "Good" },
-      { key: "gold_gap", title: "Gold + GAP", badge: "Better + GAP protection", w: warrantyPriceFor("gold"), g: gapOn ? gapPrice : 0, tier: "Better" },
-      { key: "platinum_gap", title: "Platinum + GAP", badge: "Best + GAP protection", w: warrantyPriceFor("platinum"), g: gapOn ? gapPrice : 0, tier: "Best" },
+      { key: "base", title: "Base (No Products)", badge: "Lowest payment", warrantyLevel: null, warranty: 0, gap: 0, goodBetterBest: "Base" },
+
+      { key: "bronze", title: "Bronze (Good)", badge: "Essential coverage", warrantyLevel: "bronze", warranty: bronze, gap: 0, goodBetterBest: "Good" },
+      { key: "gold", title: "Gold (Better)", badge: "More coverage + value", warrantyLevel: "gold", warranty: gold, gap: 0, goodBetterBest: "Better" },
+      { key: "platinum", title: "Platinum (Best)", badge: "Maximum coverage", warrantyLevel: "platinum", warranty: platinum, gap: 0, goodBetterBest: "Best" },
+
+      { key: "bronze_gap", title: "Bronze + GAP", badge: "Good + GAP protection", warrantyLevel: "bronze", warranty: bronze, gap: gapOn ? gapPrice : 0, goodBetterBest: "Good" },
+      { key: "gold_gap", title: "Gold + GAP", badge: "Better + GAP protection", warrantyLevel: "gold", warranty: gold, gap: gapOn ? gapPrice : 0, goodBetterBest: "Better" },
+      { key: "platinum_gap", title: "Platinum + GAP", badge: "Best + GAP protection", warrantyLevel: "platinum", warranty: platinum, gap: gapOn ? gapPrice : 0, goodBetterBest: "Best" },
     ];
 
     return plans.map(p => {
-      const totalFinanced = base.amountFinanced + p.w + p.g;
-      const payment = monthlyPayment(totalFinanced, apr, term);
-      return { ...p, base, apr, term, totalFinanced, payment };
+      const totalFinanced = base.amountFinanced + p.warranty + p.gap;
+      const pmt = monthlyPayment(totalFinanced, apr, term);
+      return { ...p, base, apr, term, totalFinanced, payment: pmt };
     });
   }
 
-  function highlightTierButtons() {
+  function setWarranty(level) {
+    selectedWarranty = level;
+    const gapOn = $("gapOn").checked;
+    selectedKey = gapOn ? `${level}_gap` : level;
+    render();
+  }
+
+  function highlightWarrantyButtons() {
     const map = { bronze: $("bronzeBtn"), gold: $("goldBtn"), platinum: $("platinumBtn") };
     for (const [lvl, btn] of Object.entries(map)) {
       btn.style.borderColor = (lvl === selectedWarranty) ? "rgba(77,163,255,.65)" : "rgba(255,255,255,.14)";
@@ -247,105 +305,121 @@ cat > index.html <<'HTML'
     }
   }
 
-  function setWarranty(level) {
-    selectedWarranty = level;
-    selectedKey = $("gapOn").checked ? `${level}_gap` : level;
-    render();
-  }
-
   function render() {
-    highlightTierButtons();
-    const gapOn = $("gapOn").checked;
+    highlightWarrantyButtons();
 
     const plans = buildPlans();
-    const byKey = Object.fromEntries(plans.map(p => [p.key, p]));
-    const keys = ["base","bronze","gold","platinum"].concat(gapOn ? ["bronze_gap","gold_gap","platinum_gap"] : []);
-
     const menu = $("menu");
     menu.innerHTML = "";
 
-    keys.forEach(k => {
-      const p = byKey[k];
+    // Show Good/Better/Best rows (Bronze/Gold/Platinum) plus Base
+    const order = ["base", "bronze", "gold", "platinum", "bronze_gap", "gold_gap", "platinum_gap"];
+    const plansByKey = Object.fromEntries(plans.map(p => [p.key, p]));
+    const gapOn = $("gapOn").checked;
+
+    // If GAP is off, don’t show the *_gap cards
+    const keysToShow = order.filter(k => gapOn ? true : !k.endsWith("_gap"));
+
+    for (const key of keysToShow) {
+      const plan = plansByKey[key];
       const el = document.createElement("div");
       el.className = "plan";
-      el.style.outline = (p.key === selectedKey) ? "2px solid rgba(77,163,255,.7)" : "none";
+      el.style.outline = (plan.key === selectedKey) ? "2px solid rgba(77,163,255,.7)" : "none";
+
       el.addEventListener("click", () => {
-        selectedKey = p.key;
-        if (p.key.startsWith("bronze")) selectedWarranty = "bronze";
-        if (p.key.startsWith("gold")) selectedWarranty = "gold";
-        if (p.key.startsWith("platinum")) selectedWarranty = "platinum";
+        selectedKey = plan.key;
+        // If they tap a warranty plan, sync warranty selection buttons too
+        if (plan.warrantyLevel) selectedWarranty = plan.warrantyLevel;
         render();
       });
 
       el.innerHTML = `
         <div class="planHeader">
           <div>
-            <div class="planTitle">${p.title}</div>
-            <div class="sub" style="margin:4px 0 0; font-size:12px;">${p.badge}</div>
+            <div class="planTitle">${plan.title}</div>
+            <div class="sub" style="margin:4px 0 0; font-size:12px;">${plan.badge}</div>
           </div>
-          <div class="pill">${pct(p.apr)} • ${p.term} mo</div>
+          <div class="pill">${pct(plan.apr)} • ${plan.term} mo</div>
         </div>
 
-        <div class="payment">${money(p.payment)}<span style="font-size:12px; color: var(--muted); font-weight:900;"> /mo</span></div>
+        <div class="payment">${money(plan.payment)}<span style="font-size:12px; color: var(--muted); font-weight:700;"> /mo</span></div>
 
         <div class="meta">
-          <span>Amt Financed: <b>${money(p.totalFinanced)}</b></span>
-          <span>Products: <b>${money(p.w + p.g)}</b></span>
-          <span>Tier: <b>${p.tier}</b></span>
+          <span>Amt Financed: <b>${money(plan.totalFinanced)}</b></span>
+          <span>Products: <b>${money(plan.warranty + plan.gap)}</b></span>
+          <span>Tier: <b>${plan.goodBetterBest}</b></span>
         </div>
 
         <div class="items">
-          <div class="line"><span>Selling Price</span><b>${money(p.base.price)}</b></div>
-          <div class="line"><span>Sales Tax</span><b>${money(p.base.tax)}</b></div>
-          <div class="line"><span>Fees</span><b>${money(p.base.fees)}</b></div>
-          <div class="line"><span>Down</span><b>- ${money(p.base.down)}</b></div>
-          <div class="line"><span>Net Trade</span><b>${p.base.netTrade >= 0 ? "- " + money(p.base.netTrade) : "+ " + money(Math.abs(p.base.netTrade))}</b></div>
-          <div class="line"><span>Warranty</span><b>${money(p.w)}</b></div>
-          <div class="line"><span>GAP</span><b>${money(p.g)}</b></div>
+          <div class="line"><span>Selling Price</span><b>${money(plan.base.price)}</b></div>
+          <div class="line"><span>Sales Tax</span><b>${money(plan.base.tax)}</b></div>
+          <div class="line"><span>Fees</span><b>${money(plan.base.fees)}</b></div>
+          <div class="line"><span>Down Payment</span><b>- ${money(plan.base.down)}</b></div>
+          <div class="line"><span>Net Trade (Trade - Payoff)</span><b>${plan.base.netTrade >= 0 ? "- " + money(plan.base.netTrade) : "+ " + money(Math.abs(plan.base.netTrade))}</b></div>
+          <div class="line"><span>Warranty</span><b>${money(plan.warranty)}</b></div>
+          <div class="line"><span>GAP</span><b>${money(plan.gap)}</b></div>
         </div>
       `;
       menu.appendChild(el);
-    });
+    }
 
     const chosen = plans.find(p => p.key === selectedKey) || plans[0];
-    $("summaryHint").innerHTML = `Selected: <b>${chosen.title}</b> — ${money(chosen.payment)}/mo at ${pct(chosen.apr)} for ${chosen.term} months.`;
+    $("summaryHint").innerHTML =
+      `Selected: <b>${chosen.title}</b> — ${money(chosen.payment)}/mo at ${pct(chosen.apr)} for ${chosen.term} months (Amt Financed ${money(chosen.totalFinanced)}).`;
   }
 
   function copySelected() {
     const plans = buildPlans();
     const chosen = plans.find(p => p.key === selectedKey) || plans[0];
     const text =
-`Westcoast Auto F&I Quote — ${chosen.title}
+`F&I Quote — ${chosen.title}
 Payment: ${money(chosen.payment)}/mo
 APR: ${pct(chosen.apr)}  Term: ${chosen.term} months
 Amount Financed: ${money(chosen.totalFinanced)}
-Warranty: ${money(chosen.w)}   GAP: ${money(chosen.g)}
+
+Breakdown:
+Selling Price: ${money(chosen.base.price)}
+Sales Tax: ${money(chosen.base.tax)}
+Fees: ${money(chosen.base.fees)}
+Down: -${money(chosen.base.down)}
+Net Trade (Trade - Payoff): ${chosen.base.netTrade >= 0 ? "-" + money(chosen.base.netTrade) : "+" + money(Math.abs(chosen.base.netTrade))}
+Warranty: ${money(chosen.warranty)}
+GAP: ${money(chosen.gap)}
 `;
-    navigator.clipboard?.writeText(text).then(() => alert("Copied.")).catch(() => prompt("Copy:", text));
+    navigator.clipboard?.writeText(text).then(() => alert("Copied to clipboard.")).catch(() => prompt("Copy this:", text));
   }
 
-  function reset() {
-    $("price").value = 30000; $("taxRate").value = 9.50; $("fees").value = 899;
-    $("trade").value = 0; $("payoff").value = 0; $("down").value = 3000;
-    $("apr").value = 8.99; $("term").value = 72;
-    $("bronzePrice").value = 1495; $("goldPrice").value = 2495; $("platinumPrice").value = 3495;
-    $("gapPrice").value = 995; $("gapOn").checked = true;
-    selectedWarranty = "platinum"; selectedKey = "platinum_gap";
+  function resetExample() {
+    $("price").value = 30000;
+    $("taxRate").value = 9.50;
+    $("fees").value = 899;
+    $("trade").value = 0;
+    $("payoff").value = 0;
+    $("down").value = 3000;
+    $("apr").value = 8.99;
+    $("term").value = 72;
+    $("bronzePrice").value = 1495;
+    $("goldPrice").value = 2495;
+    $("platinumPrice").value = 3495;
+    $("gapPrice").value = 995;
+    $("gapOn").checked = true;
+    selectedWarranty = "platinum";
+    selectedKey = "platinum_gap";
     render();
   }
 
-  ["price","taxRate","fees","trade","payoff","down","apr","term","bronzePrice","goldPrice","platinumPrice","gapPrice","gapOn"]
-    .forEach(id => $(id).addEventListener("input", render));
+  // Wire up listeners
+  const ids = ["price","taxRate","fees","trade","payoff","down","apr","term","bronzePrice","goldPrice","platinumPrice","gapPrice","gapOn"];
+  ids.forEach(id => $(id).addEventListener("input", render));
 
   $("bronzeBtn").addEventListener("click", () => setWarranty("bronze"));
   $("goldBtn").addEventListener("click", () => setWarranty("gold"));
   $("platinumBtn").addEventListener("click", () => setWarranty("platinum"));
 
   $("copy").addEventListener("click", copySelected);
-  $("reset").addEventListener("click", reset);
+  $("reset").addEventListener("click", resetExample);
 
   render();
 </script>
 </body>
 </html>
-HTML
